@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IoLogoWhatsapp } from "react-icons/io";
 import {
   Modal,
@@ -21,9 +21,12 @@ import {
 interface BookNowProps {
   isOpen: boolean;
   onClose: () => void;
+  Name?: string; // Make name prop optional
+  phone?: string; // Make phoneNumber prop optional
+  count?: number; // Make currentStep prop optional
 }
 
-const BookNow: React.FC<BookNowProps> = ({ isOpen, onClose }) => {
+const BookNow: React.FC<BookNowProps> = ({ isOpen, onClose, count,Name,phone }) => {
   const initialRef = useRef<HTMLInputElement | null>(null);
   const finalRef = useRef<HTMLButtonElement | null>(null);
 
@@ -35,11 +38,42 @@ const BookNow: React.FC<BookNowProps> = ({ isOpen, onClose }) => {
   const [company, setCompany] = useState("");
   const [chiefComplaints, setChiefComplaints] = useState("");
 
-  const nextStep = () => setCurrentStep(currentStep + 1);
+  console.log(count,"BookNow")
+  useEffect(() => {
+    if (count !== undefined) {
+      setCurrentStep(count);
+    }
+    if(Name){
+        setName(Name)
+    }
+    if(phone){
+        setPhoneNumber(phone)
+    }
+  }, [count,Name,phone]);
+
+  const nextStep = () => {
+    // Check if any required fields are empty based on the current step
+    if (currentStep === 1 && (name === "" || phoneNumber === "")) {
+      alert("Please fill in all required fields.");
+    } else if (currentStep === 2 && (age === "" || city === "")) {
+      alert("Please fill in all required fields.");
+    } else if (currentStep === 3 && (company === "" || chiefComplaints === "")) {
+      alert("Please fill in all required fields.");
+    } else {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+  
   const prevStep = () => setCurrentStep(currentStep - 1);
 
   const handleSave = () => {
     nextStep();
+    setPhoneNumber("")
+    setAge("");
+    setCity("")
+    setCompany("")
+    setChiefComplaints("")
+
   };
 
   return (
@@ -57,11 +91,16 @@ const BookNow: React.FC<BookNowProps> = ({ isOpen, onClose }) => {
           <Heading as="h3" size="lg" textAlign="center" color={"#495770"}>
             {currentStep === 4 ? "" : "Book an Appointment for FREE"}
           </Heading>
-          <Text fontSize='md' textAlign="center" color={"#388aaf"}> {currentStep === 4 ? "" :"60+ Expert Physioterapists for 200+ Conditions"}</Text>
+          <Text fontSize="md" textAlign="center" color={"#388aaf"}>
+            {" "}
+            {currentStep === 4
+              ? ""
+              : "60+ Expert Physioterapists for 200+ Conditions"}
+          </Text>
           {currentStep === 1 && (
             <>
               <FormControl color={"#495770"}>
-                <FormLabel >Your name</FormLabel>
+                <FormLabel>Your name</FormLabel>
                 <Input
                   type="text"
                   placeholder="Your Name"
@@ -131,7 +170,7 @@ const BookNow: React.FC<BookNowProps> = ({ isOpen, onClose }) => {
           {currentStep === 4 && (
             <>
               <Box width="100%" margin={"auto"}>
-                <AspectRatio ratio={4/3}>
+                <AspectRatio ratio={4 / 3}>
                   <iframe
                     title="Completed"
                     src="https://cdn.dribbble.com/users/2185205/screenshots/7886140/media/90211520c82920dcaf6aea7604aeb029.gif"
@@ -148,12 +187,9 @@ const BookNow: React.FC<BookNowProps> = ({ isOpen, onClose }) => {
                 </Heading>
                 <Text fontSize="sm" color="gray" mt={4}>
                   We will{" "}
-                  
-                 
                   <Box as="span" fontWeight="bold" color="black">
-                  {/* <IoLogoWhatsapp color="green" style={{ verticalAlign: "middle",  border:"2px solid red" }} /> */}
-   
-                   WhatsApp
+                    {/* <IoLogoWhatsapp color="green" style={{ verticalAlign: "middle",  border:"2px solid red" }} /> */}
+                    WhatsApp
                   </Box>{" "}
                   you the appointment details on the number provided.
                 </Text>
