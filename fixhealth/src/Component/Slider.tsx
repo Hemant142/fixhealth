@@ -26,14 +26,24 @@ interface SliderProps {
 
 const Slider: React.FC<SliderProps> = ({ items }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  console.log(currentSlide,"gesa")
 
   const handlePrev = () => {
-    setCurrentSlide(currentSlide >0 ? currentSlide - 1:currentSlide );
+    setCurrentSlide(currentSlide > 0 ? currentSlide - 1 : currentSlide);
   };
 
   const handleNext = () => {
-    setCurrentSlide(currentSlide === items.length - 4 ? currentSlide : currentSlide + 1);
+    // Determine the number of items to slide based on the current screen size
+    let itemsToShow = 4; // Default for laptop screen
+    if (window.innerWidth < 1024 && window.innerWidth >= 768) {
+      itemsToShow = 2; // Tablet screen
+    } else if (window.innerWidth < 768) {
+      itemsToShow = 1; // Mobile screen
+    }
+
+    // Update current slide based on the number of items to show
+    setCurrentSlide(
+      currentSlide === items.length - itemsToShow ? currentSlide : currentSlide + 1
+    );
   };
 
   return (
@@ -46,10 +56,7 @@ const Slider: React.FC<SliderProps> = ({ items }) => {
       mb={"50px"}
     >
       <Box className="slider" display="flex" transition="transform 0.5s ease">
-        <Box
-          className="slider-inner"
-          display="flex"
-        >
+        <Box className="slider-inner" display="flex">
           {items.slice(currentSlide, currentSlide + 4).map((item) => (
             <Card
               key={item.id}
@@ -58,7 +65,12 @@ const Slider: React.FC<SliderProps> = ({ items }) => {
               borderRadius="lg"
               boxShadow="md"
             >
-              <Image maxH={"200px"} src={item.imgSrc} alt={item.name} borderTopRadius="lg" />
+              <Image
+                maxH={"200px"}
+                src={item.imgSrc}
+                alt={item.name}
+                borderTopRadius="lg"
+              />
               <CardBody>
                 <Stack spacing="2">
                   <Heading as="h3" size="md">
@@ -87,7 +99,6 @@ const Slider: React.FC<SliderProps> = ({ items }) => {
         position="absolute"
         transform="translate(-50%,-50%)"
         borderRadius={"50%"}
-        // top="50%"
         left="10"
         backgroundColor="grey"
         border="none"
@@ -101,12 +112,12 @@ const Slider: React.FC<SliderProps> = ({ items }) => {
         position="absolute"
         transform="translate(-50%,-50%)"
         borderRadius={"50%"}
-        // top=""
+        marginBottom={"500px"}
         right="10"
         backgroundColor="grey"
         border="none"
         onClick={handleNext}
-        disabled={currentSlide ==6}
+        disabled={currentSlide === items.length - 4} // Adjusted for dynamic itemsToShow
       >
         <ChevronRightIcon />
       </Button>
