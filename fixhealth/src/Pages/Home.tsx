@@ -72,7 +72,7 @@ const Home = () => {
       name: "Dr. Swati Kumari",
       specialization: "MBBS (Junior surgeon)",
       experience: "2 years of experience",
-      
+
     },
   ];
   const [Name, setName] = useState("");
@@ -106,7 +106,7 @@ const [count,setCount]=useState(1)
             maxWidth={{ base: "90%", md: "400px" }}
             margin={{ base: "20px auto", md: "20px auto 0" }}
             position={{ base: "static", md: "static", lg:"absolute" }}
-            top={{ base: "auto", md: "100%", lg: "40%" }}
+            top={{ base: "auto", md: "100%", lg: "70%" }}
             left={{ base: "auto", md: "auto" , lg:"10%" }}
             transform={{ base: "none", md: "none",lg:"translateY(-60%)" }}
             zIndex="1" // Ensure the card appears above the image
@@ -157,7 +157,9 @@ const [count,setCount]=useState(1)
 {/* BookNow modal */}
 <BookNow isOpen={isBookNowOpen} onClose={() => setIsBookNowOpen(false)} Name={Name} phone={phone} count={count} />
     </Box>
-       <Box>
+
+    
+       <Box  marginTop={"10"} marginBottom={"10"}>
        <MeetNow/>
      </Box>
 

@@ -71,7 +71,7 @@ const MeetNow = () => {
     },
   ];
   return (
-    <Box boxSizing="border-box" marginTop={"10"} marginBottom={"10"}>
+    <Box boxSizing="border-box">
       <Box textAlign={"center"}>
         <Box>
           <Heading
